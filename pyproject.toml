@@ -1,0 +1,98 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sonoglyph"
+version = "0.1.0"
+description = "Extract musical features from audio: tempo, key, mood, spectral data and more."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "qrw512" }
+]
+keywords = ["audio", "music", "mir", "analysis", "tempo", "bpm", "mood", "ml"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.11",
+    "soundfile>=0.12",
+    "librosa>=0.10",
+    "pydantic>=2.5",
+    "typer>=0.12",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+html = [
+    "matplotlib>=3.8",
+]
+ml = [
+    "onnxruntime>=1.17",
+    "huggingface-hub>=0.20",
+    "vibenet>=0.1",
+]
+server = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "python-multipart>=0.0.9",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "httpx>=0.27",
+]
+all = [
+    "sonoglyph[html,server,ml]",
+]
+
+[project.scripts]
+sonoglyph = "sonoglyph.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/qrw512/sonoglyph"
+Repository = "https://github.com/qrw512/sonoglyph"
+Issues = "https://github.com/qrw512/sonoglyph/issues"
+PyPI = "https://pypi.org/project/sonoglyph/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sonoglyph"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/README.ru.md",
+    "/LICENSE",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=sonoglyph --cov-report=term-missing"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+plugins = ["pydantic.mypy"]
