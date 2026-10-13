@@ -131,20 +131,32 @@ sonoglyph batch ./music/ --pattern "*.mp3" --html report.html --csv library.csv
 
 ```python
 from sonoglyph import analyze, analyze_batch
-
-result = analyze("track.mp3")
-
-print(result.tempo.bpm)              # 117.5
-print(result.key.name)               # "D# minor"
-print(result.mood.label)             # "melancholic"
-print(result.mood.tags)              # ["atmospheric", "dark"]
-print(result.mood.valence)           # 0.40
-
-results = analyze_batch(["a.mp3", "b.mp3", "c.mp3"], features=["tempo", "mood"])
-
 from sonoglyph.exporters import to_csv, to_html
-to_csv(results, "library.csv")
-to_html(results, "report.html", include_spectrograms=True)
+
+
+def main() -> None:
+    # Одиночный файл
+    result = analyze("PockyBoy.mp3")
+    print(f"BPM:   {result.tempo.bpm:.1f}")
+    print(f"Key:   {result.key.name}")
+    print(f"Mood:  {result.mood.label}")
+    print(f"Tags:  {result.mood.tags}")
+    print(f"Valence: {result.mood.valence:.2f}")
+    print()
+
+    # Пакетный — должен находиться внутри main() в Windows
+    results = analyze_batch(
+        ["PockyBoy.mp3", "GinsengStrip.mp3", "LongTime.mp3"],
+        features=["tempo", "mood"],
+    )
+
+    to_csv(results, "library.csv")
+    to_html(results, "report.html", include_spectrograms=True)
+    print(f"Done: {len(results)} tracks analyzed.")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 ### REST API
