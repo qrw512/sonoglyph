@@ -136,7 +136,7 @@ from sonoglyph.exporters import to_csv, to_html
 
 def main() -> None:
     # Single track
-    result = analyze("PockyBoy.mp3")
+    result = analyze("1.mp3")
     print(f"BPM:   {result.tempo.bpm:.1f}")
     print(f"Key:   {result.key.name}")
     print(f"Mood:  {result.mood.label}")
@@ -146,7 +146,7 @@ def main() -> None:
 
     # Batch — must be inside main() on Windows
     results = analyze_batch(
-        ["PockyBoy.mp3", "GinsengStrip.mp3", "LongTime.mp3"],
+        ["1.mp3", "2.mp3", "3.mp3"],
         features=["tempo", "mood"],
     )
 
